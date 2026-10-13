@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ConicMaster: Interactive Conic Sections Hub</title>
@@ -9,9 +9,10 @@
     <!-- Desmos API -->
     <script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
 
-    <!-- FIREBASE COMPAT SDKs -->
+    <!-- FIREBASE COMPAT SDKs (Auth + Firestore) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col">
 
@@ -47,7 +48,7 @@
                 <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg">Sign In</button>
             </form>
 
-            <!-- FORM 2: REAL REGISTRATION & VERIFICATION EMAIL -->
+            <!-- FORM 2: REGISTRATION -->
             <form id="formRegister" onsubmit="handleFirebaseRegister(event)" class="hidden space-y-3 text-left">
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name:</label>
@@ -68,7 +69,7 @@
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Password (min 6 chars):</label>
                     <input type="password" id="regPassword" minlength="6" required placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100">
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg">Register & Send Real Verification Email</button>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-lg">Register & Send Verification Email</button>
             </form>
 
         </div>
@@ -162,41 +163,6 @@
                             <p class="text-slate-300"><strong>Problem:</strong> Find the equation of a circle with center at $(2, -3)$ and radius $r = 4$.</p>
                             <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Step-by-Step Solution:</strong><br>1. Use translated formula: $(x - h)^2 + (y - k)^2 = r^2$<br>2. Substitute $h = 2, k = -3, r = 4$: $(x - 2)^2 + (y - (-3))^2 = 4^2$<br><strong>Final Answer: $(x - 2)^2 + (y + 3)^2 = 16$</strong></p>
                         </div>
-                        <div class="bg-slate-800 p-4 rounded-lg text-xs space-y-2 border border-slate-700">
-                            <span class="text-emerald-400 font-bold uppercase tracking-wider text-[11px]">Example 3: Extracting Radius from Equation</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> Find the radius of the circle given by $x^2 + y^2 = 49$.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Step-by-Step Solution:</strong><br>1. Compare with $x^2 + y^2 = r^2$<br>2. Thus, $r^2 = 49 \implies r = \sqrt{49} = 7$<br><strong>Final Answer: Radius $r = 7$</strong></p>
-                        </div>
-                        <div class="bg-slate-800 p-4 rounded-lg text-xs space-y-2 border border-slate-700">
-                            <span class="text-emerald-400 font-bold uppercase tracking-wider text-[11px]">Example 4: Circle with Radical Radius</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> Write the equation of a circle with center $(-1, 5)$ and radius $r = \sqrt{3}$.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Step-by-Step Solution:</strong><br>1. Substitute $h = -1, k = 5, r = \sqrt{3}$ into $(x - h)^2 + (y - k)^2 = r^2$<br>2. $(x - (-1))^2 + (y - 5)^2 = (\sqrt{3})^2$<br><strong>Final Answer: $(x + 1)^2 + (y - 5)^2 = 3$</strong></p>
-                        </div>
-                        <div class="bg-slate-800 p-4 rounded-lg text-xs space-y-2 border border-slate-700">
-                            <span class="text-emerald-400 font-bold uppercase tracking-wider text-[11px]">Example 5: Identifying Center Coordinates</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> Find the center $(h, k)$ of the circle $(x - 3)^2 + (y + 2)^2 = 81$.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Step-by-Step Solution:</strong><br>1. Match $(x - 3)$ with $(x - h) \implies h = 3$<br>2. Match $(y + 2)$ with $(y - k) \implies y - (-2) \implies k = -2$<br><strong>Final Answer: Center is $(3, -2)$</strong></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. THE PARABOLA -->
-                <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-4">
-                    <h3 class="text-indigo-400 font-bold text-lg border-b border-slate-800 pb-2">2. The Parabola (Complete Solutions)</h3>
-                    <div class="text-xs font-mono bg-slate-800 p-3 rounded text-indigo-200">
-                        Formulas: Origin: $y^2 = 4px$ &nbsp;|&nbsp; Translated: $(y - k)^2 = 4p(x - h)$
-                    </div>
-                    <div class="grid grid-cols-1 gap-4">
-                        <div class="bg-slate-800 p-4 rounded-lg text-xs space-y-2 border border-slate-700">
-                            <span class="text-emerald-400 font-bold uppercase tracking-wider text-[11px]">Example 1: Finding Focal Parameter $p$</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> Find the focal length parameter $p$ for the parabola $y^2 = 12x$.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Step-by-Step Solution:</strong><br>1. Compare $y^2 = 12x$ with standard form $y^2 = 4px$<br>2. Set $4p = 12 \implies p = 3$<br><strong>Final Answer: $p = 3$</strong></p>
-                        </div>
-                        <div class="bg-slate-800 p-4 rounded-lg text-xs space-y-2 border border-slate-700">
-                            <span class="text-emerald-400 font-bold uppercase tracking-wider text-[11px]">Example 2: Writing Translated Parabola Equation</span>
-                            <p class="text-slate-300"><strong>Problem:</strong> Find the equation of a horizontal parabola with vertex $(-2, 1)$ and $p = 2$.</p>
-                            <p class="text-indigo-200 font-mono bg-slate-900 p-2.5 rounded"><strong>Step-by-Step Solution:</strong><br>1. Use $(y - k)^2 = 4p(x - h)$. Here $h = -2, k = 1, p = 2$.<br>2. $(y - 1)^2 = 4(2)(x - (-2)) \implies (y - 1)^2 = 8(x + 2)$<br><strong>Final Answer: $(y - 1)^2 = 8(x + 2)$</strong></p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -236,7 +202,7 @@
                     <div class="inline-block bg-indigo-600 text-white text-3xl font-black p-4 rounded-full mb-2">🏆</div>
                     <h3 class="text-2xl font-bold text-white">Round Completed!</h3>
                     <p id="finalScoreText" class="text-slate-300 text-sm"></p>
-                    <p class="text-emerald-400 text-xs font-semibold">Your score has been logged to the Teacher Dashboard!</p>
+                    <p class="text-emerald-400 text-xs font-semibold">Your score has been logged live to the Cloud Teacher Dashboard!</p>
                 </div>
             </div>
         </section>
@@ -246,9 +212,9 @@
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6">
                 <div class="bg-slate-900 p-5 rounded-xl border border-indigo-800/50 space-y-4">
                     <h3 class="text-base font-bold text-indigo-400 flex items-center gap-2">
-                        <span>📡 Live Game PIN Broadcaster & Round Controller</span>
+                        <span>📡 Live Cloud Game PIN Broadcaster</span>
                     </h3>
-                    <p class="text-xs text-slate-400">Selecting a round generates a unique 4-digit PIN and clears the live table for fresh records.</p>
+                    <p class="text-xs text-slate-400">Broadcasting a PIN saves it to the cloud so any student device anywhere can connect instantly.</p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
                         <div>
@@ -259,11 +225,11 @@
                                 <option value="difficult">Difficult Round</option>
                             </select>
                         </div>
-                        <button onclick="broadcastNewGameRound()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-lg text-xs transition">Generate Round & PIN</button>
+                        <button onclick="broadcastNewGameRound()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-lg text-xs transition">Broadcast Cloud PIN</button>
                         
                         <div class="md:col-span-2 bg-slate-800 p-3 rounded-lg border border-slate-700 flex items-center justify-between">
                             <div>
-                                <span class="text-[10px] text-slate-400 uppercase font-bold">Active Game PIN</span>
+                                <span class="text-[10px] text-slate-400 uppercase font-bold">Active Cloud PIN</span>
                                 <div id="displayActivePin" class="text-xl font-mono font-black text-emerald-400">NONE</div>
                             </div>
                             <img id="displayRoundQR" src="" alt="QR" class="w-12 h-12 bg-white p-1 rounded border border-slate-600">
@@ -273,10 +239,10 @@
 
                 <div>
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
-                        <h3 class="text-base font-bold text-white">📊 Student Live Progress & Scores</h3>
+                        <h3 class="text-base font-bold text-white">📊 Student Live Progress & Scores (Firebase Cloud Sync)</h3>
                         <div class="flex gap-2">
-                            <button onclick="loadDashboardData()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">Refresh</button>
-                            <button onclick="clearDashboardData()" class="bg-rose-700 hover:bg-rose-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">Clear Table</button>
+                            <button onclick="loadDashboardData()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">Refresh Table</button>
+                            <button onclick="clearDashboardData()" class="bg-rose-700 hover:bg-rose-600 text-white text-xs font-bold py-2 px-3 rounded-lg transition">Clear Records</button>
                         </div>
                     </div>
 
@@ -303,12 +269,11 @@
 
     <!-- Footer -->
     <footer class="bg-slate-900 border-t border-slate-800 py-3 text-center text-xs text-slate-500">
-        ConicMaster Teaching Device &bull; Accessible Online & Offline &bull; ₱0 Maintenance Cost
+        ConicMaster Teaching Device &bull; Real-time Firebase Cloud Sync &bull; ₱0 Maintenance
     </footer>
 
-    <!-- Application Script with Firebase Auth Integration -->
     <script>
-        // REPLACE WITH YOUR FIREBASE CONFIG FROM STEP 1
+        // REPLACE WITH YOUR FIREBASE CONFIG KEYS
         const firebaseConfig = {
   apiKey: "AIzaSyAHjIzF3_9cc8cI3lXKj7ec3dhGJinIcB8",
   authDomain: "conicmaster-961bf.firebaseapp.com",
@@ -318,13 +283,14 @@
   appId: "1:95380702057:web:91ed894b9b9cba502f33f8"
 };
 
-        // Initialize Firebase
+        // Initialize Firebase Apps & Firestore Database
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+        const db = firebase.firestore();
 
         let currentUserData = null;
 
-        // Firebase Auth State Observer
+        // Firebase Auth Observer
         auth.onAuthStateChanged(user => {
             if (user) {
                 if (user.emailVerified) {
@@ -340,7 +306,7 @@
                         el.classList.toggle('hidden', localRole !== 'teacher');
                     });
                 } else {
-                    alert("Please verify your email! A verification link was sent to your inbox.");
+                    alert("Please verify your email address via the link sent to your inbox.");
                     auth.signOut();
                 }
             } else {
@@ -403,12 +369,8 @@
             document.getElementById(`btn-${tabName}`).classList.add('bg-indigo-600', 'text-white', 'shadow');
             document.getElementById(`btn-${tabName}`).classList.remove('text-indigo-300');
 
-            if(tabName === 'simulator' && calculator) {
-                calculator.resize();
-            }
-            if(tabName === 'dashboard') {
-                loadDashboardData();
-            }
+            if(tabName === 'simulator' && calculator) calculator.resize();
+            if(tabName === 'dashboard') loadDashboardData();
         }
 
         // DESMOS SIMULATOR LOGIC
@@ -492,19 +454,54 @@
         conicSelect.addEventListener('change', (e) => loadConic(e.target.value));
         loadConic('circle');
 
-        // BROADCASTER & QUIZ
-        function broadcastNewGameRound() {
+        // REAL-TIME FIRESTORE BROADCASTER & QUIZ
+        async function broadcastNewGameRound() {
             const round = document.getElementById('teacherRoundSelect').value;
             const newPin = Math.floor(1000 + Math.random() * 9000).toString();
 
-            localStorage.setItem('conicmaster_active_session', JSON.stringify({ pin: newPin, round: round }));
-            localStorage.removeItem('conicmaster_submissions');
+            try {
+                // Save Game PIN to Cloud Firestore Database
+                await db.collection("game_sessions").doc("active_session").set({
+                    pin: newPin,
+                    round: round,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
 
-            document.getElementById('displayActivePin').innerText = newPin;
-            document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(window.location.href + '?pin=' + newPin)}`;
+                document.getElementById('displayActivePin').innerText = newPin;
+                document.getElementById('displayRoundQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(window.location.href + '?pin=' + newPin)}`;
 
-            alert(`Broadcasting ${round.toUpperCase()} round! Game PIN is: ${newPin}. Previous dashboard table cleared for new entries.`);
-            loadDashboardData();
+                alert(`Cloud PIN ${newPin} broadcasted for ${round.toUpperCase()} round! Students on any device can now connect.`);
+                clearDashboardData(false);
+            } catch(err) {
+                alert("Cloud Sync Error: " + err.message);
+            }
+        }
+
+        async function verifyStudentGamePin() {
+            const inputPin = document.getElementById('gamePinInput').value.trim();
+
+            try {
+                // Fetch Active Game PIN directly from Cloud Database
+                const doc = await db.collection("game_sessions").doc("active_session").get();
+                if(!doc.exists) {
+                    alert("No active quiz session found! Ask your teacher to broadcast a PIN.");
+                    return;
+                }
+
+                const data = doc.data();
+                if(inputPin !== data.pin) {
+                    alert("Invalid or inactive Game PIN! Ask your teacher for the active PIN.");
+                    return;
+                }
+
+                document.getElementById('studentPinGate').classList.add('hidden');
+                document.getElementById('quizGameArea').classList.remove('hidden');
+                document.getElementById('playerBadge').innerText = `${currentUserData.name} | Round: ${data.round.toUpperCase()}`;
+                
+                startQuizSession(data.round);
+            } catch(err) {
+                alert("Cloud Connection Error: " + err.message);
+            }
         }
 
         const quizBanks = {
@@ -523,22 +520,6 @@
         };
 
         let activeQuizQuestions = [], currentQuestion = 0, score = 0;
-
-        function verifyStudentGamePin() {
-            const inputPin = document.getElementById('gamePinInput').value.trim();
-            const session = JSON.parse(localStorage.getItem('conicmaster_active_session'));
-
-            if(!session || inputPin !== session.pin) {
-                alert("Invalid or inactive Game PIN! Ask your teacher for the active PIN.");
-                return;
-            }
-
-            document.getElementById('studentPinGate').classList.add('hidden');
-            document.getElementById('quizGameArea').classList.remove('hidden');
-            document.getElementById('playerBadge').innerText = `${currentUserData.name} | Round: ${session.round.toUpperCase()}`;
-            
-            startQuizSession(session.round);
-        }
 
         function startQuizSession(round) {
             let bank = quizBanks[round] || quizBanks.easy;
@@ -581,26 +562,38 @@
             });
         }
 
-        function saveQuizSubmission(name, email, finalScore) {
-            const session = JSON.parse(localStorage.getItem('conicmaster_active_session')) || { round: 'EASY' };
-            let submissions = JSON.parse(localStorage.getItem('conicmaster_submissions') || '[]');
-            
-            submissions.unshift({
-                name: name, email: email, round: session.round.toUpperCase(), score: finalScore, timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            });
+        async function saveQuizSubmission(name, email, finalScore) {
+            try {
+                const doc = await db.collection("game_sessions").doc("active_session").get();
+                const roundName = doc.exists ? doc.data().round.toUpperCase() : 'EASY';
 
-            localStorage.setItem('conicmaster_submissions', JSON.stringify(submissions));
+                await db.collection("submissions").add({
+                    name: name,
+                    email: email,
+                    round: roundName,
+                    score: finalScore,
+                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            } catch(err) {
+                console.error("Error logging score:", err);
+            }
         }
 
         function loadDashboardData() {
-            let submissions = JSON.parse(localStorage.getItem('conicmaster_submissions') || '[]');
             const tbody = document.getElementById('dashboardTableBody');
-            tbody.innerHTML = '';
+            tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-400">Loading Cloud Data...</td></tr>';
 
-            if(submissions.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">No student submissions recorded for this active round.</td></tr>`;
-            } else {
-                submissions.forEach(sub => {
+            // Real-time Cloud Submissions Listener
+            db.collection("submissions").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+                tbody.innerHTML = '';
+                if(snapshot.empty) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">No student submissions recorded for this round yet.</td></tr>`;
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const sub = doc.data();
                     const tr = document.createElement('tr');
                     tr.className = 'hover:bg-slate-900/50';
                     tr.innerHTML = `
@@ -609,17 +602,24 @@
                         <td class="p-3 font-bold text-indigo-300">${sub.round}</td>
                         <td class="p-3 font-bold text-indigo-300">${sub.score}</td>
                         <td class="p-3 font-bold text-emerald-400">${((sub.score / 3) * 100).toFixed(0)}%</td>
-                        <td class="p-3 text-slate-500">${sub.timestamp}</td>
+                        <td class="p-3 text-slate-500">${sub.timestamp || ''}</td>
                     `;
                     tbody.appendChild(tr);
                 });
-            }
+            });
         }
 
-        function clearDashboardData() {
-            if(confirm("Clear student records for this round?")) {
-                localStorage.removeItem('conicmaster_submissions');
-                loadDashboardData();
+        async function clearDashboardData(confirmPrompt = true) {
+            if(!confirmPrompt || confirm("Clear all student records from the Cloud Database?")) {
+                try {
+                    const snapshot = await db.collection("submissions").get();
+                    const batch = db.batch();
+                    snapshot.forEach(doc => batch.delete(doc.ref));
+                    await batch.commit();
+                    loadDashboardData();
+                } catch(err) {
+                    console.error("Error clearing database:", err);
+                }
             }
         }
     </script>
